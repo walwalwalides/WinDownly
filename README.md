@@ -1,5 +1,5 @@
 # WinDownly 
-WinDownly is a Software that deliver a easy method to wirelessly transfer files between your Android device and your desktop.
+WinDownly is a Software that deliver a easy method to wirelessly transfer files between your Android device and your Desktop.
 
 ![Platforms](https://img.shields.io/badge/Supported%20platforms-Win32%20and%20Win64-red.svg)
 
