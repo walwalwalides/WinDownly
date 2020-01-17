@@ -13,9 +13,9 @@ WinDownly is a Software that deliver a easy method to wirelessly transfer files 
 
 Principal Software Benefits:
 
-     - Transfer any extension Files through shell
+     - Transfer any extension Files using udp as transfer protocol
      
-     - Auto create a shortcut through shell
+     - Auto create a shortcut using windows shell
 
 
 ### Main View
