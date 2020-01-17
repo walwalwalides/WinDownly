@@ -13,9 +13,9 @@ WinDownly is a Software that deliver a easy method to wirelessly transfer files 
 
 Principal Software Benefits:
 
-     - Transfer any extension Files through shell explorer
+     - Transfer any extension Files through shell
      
-     - Save the different parameters of Table (Color ,Width...)
+     - Auto create a shortcut through shell
 
 
 ### Main View
@@ -39,8 +39,8 @@ Principal Software Benefits:
 | File | Contents | 
 | --- | --- |
 | .gitignore | Git ignores the Files in this File |
-|[WinDownly.exe](https://github.com/walwalwalides/TColorCSV/releases/download/TColorCSV/TColorCSV__Setup.exe)| Download TColorCSV
-|[WinDownly.apk](https://github.com/walwalwalides/TColorCSV/releases/download/TColorCSV/TColorCSV__Setup.exe)| Download TColorCSV
+|[WinDownly.exe](https://github.com/walwalwalides/TColorCSV/releases/download/TColorCSV/TColorCSV__Setup.exe)| Download WinDownly for (PC).
+|[WinDownly.apk](https://github.com/walwalwalides/TColorCSV/releases/download/TColorCSV/TColorCSV__Setup.exe)| Download WinDownly for (Android).
 | README.md | The Readme for this Project|
 
 ------
