@@ -17,7 +17,7 @@ Principal Software Benefits:
      
      - Auto create a shortcut using windows shell
      
-     - Receive a notification after every success downloading
+     - Receive a notification in your android App after every success downloading
 
 
 ### Main View
