@@ -39,8 +39,8 @@ Principal Software Benefits:
 | File | Contents | 
 | --- | --- |
 | .gitignore | Git ignores the Files in this File |
-|[WinDownly.exe](https://github.com/walwalwalides/TColorCSV/releases/download/TColorCSV/TColorCSV__Setup.exe)| Download WinDownly for (PC).
-|[WinDownly.apk](https://github.com/walwalwalides/TColorCSV/releases/download/TColorCSV/TColorCSV__Setup.exe)| Download WinDownly for (Android).
+|[WinDownly.exe](https://github.com/walwalwalides/WinDownly/releases/download/WinDownlyPC/WinDownly__Setup.exe)| Download WinDownly for (PC).
+|[WinDownly.apk](https://github.com/walwalwalides/WinDownly/releases/download/WinDownlyAndroid/WinDownly.apk)| Download WinDownly for (Android).
 | README.md | The Readme for this Project|
 
 ------
