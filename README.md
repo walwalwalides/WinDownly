@@ -1,19 +1,19 @@
-# TColorCSV 
-TColorCSV is a Software that deliver a good methode to Create and Save CSV table.
+# WinDownly 
+WinDownly is a Software that deliver a easy method to wirelessly transfer files between your Android device and your desktop.
 
 ![Platforms](https://img.shields.io/badge/Supported%20platforms-Win32%20and%20Win64-red.svg)
 
 
-![](TColorCSV.png)
+![](WinDownly.png)
 **Authors:**  *WalWalWalides*
 ------
 
-`TColorCSV` help to create easily CSV table.
+`WinDownly` help to easily transfer Files from pc to android app.
 
 
 Principal Software Benefits:
 
-     - Reading and Writing CSV Files
+     - Transfer any extension Files through shell explorer
      
      - Save the different parameters of Table (Color ,Width...)
 
@@ -25,12 +25,22 @@ Principal Software Benefits:
 
 ------
 
+### Android View
+![](Img/AndroidView.png)
+
+
+
+------
+
+
+
 ## Contains
 
 | File | Contents | 
 | --- | --- |
 | .gitignore | Git ignores the Files in this File |
-|[TColorCSV.exe](https://github.com/walwalwalides/TColorCSV/releases/download/TColorCSV/TColorCSV__Setup.exe)| Download TColorCSV
+|[WinDownly.exe](https://github.com/walwalwalides/TColorCSV/releases/download/TColorCSV/TColorCSV__Setup.exe)| Download TColorCSV
+|[WinDownly.apk](https://github.com/walwalwalides/TColorCSV/releases/download/TColorCSV/TColorCSV__Setup.exe)| Download TColorCSV
 | README.md | The Readme for this Project|
 
 ------
