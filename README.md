@@ -16,6 +16,8 @@ Principal Software Benefits:
      - Transfer any extension Files using udp as transfer protocol
      
      - Auto create a shortcut using windows shell
+     
+     - Receive a notification after every success downloading
 
 
 ### Main View
