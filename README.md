@@ -18,6 +18,8 @@ Principal Software Benefits:
      - Auto create a shortcut using windows shell
      
      - Receive a notification in your android App after every success downloading
+     
+     - Upload and download files through wireless communication
 
 
 ### Main View
