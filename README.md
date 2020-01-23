@@ -29,8 +29,8 @@ Principal Software Benefits:
 
 ------
 
-### Android View (WinDownly V1.0.0 )
-![](Img/WindownlyV1.png)
+### Android View (WinDownly V 1.0.0 )
+![](Img/WinDownlyV1.png)
 
 
 
