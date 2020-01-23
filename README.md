@@ -23,7 +23,7 @@ Principal Software Benefits:
 
 
 ### Main View
-![](Img/MainView.png)
+![](Img/MainView_.png)
 
 
 
