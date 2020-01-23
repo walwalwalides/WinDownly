@@ -30,7 +30,7 @@ Principal Software Benefits:
 ------
 
 ### Android View
-![](Img/AndroidView.png)
+![](Img/WindownlyV1.png)
 
 
 
