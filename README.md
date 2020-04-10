@@ -3,6 +3,12 @@ WinDownly is a Software that deliver a easy method to wirelessly transfer files 
 
 ![Platforms](https://img.shields.io/badge/Supported%20platforms-Win32%20and%20Win64-red.svg)
 
+![GitHub](https://img.shields.io/github/license/walwalwalides/WinDownly)
+
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/walwalwalides/WinDownly)
+![GitHub last commit](https://img.shields.io/github/last-commit/walwalwalides/WinDownly)
+[![GitHub stars](https://img.shields.io/github/stars/walwalwalides/WinDownly)](https://github.com/walwalwalides/WinDownly/stargazers)
+
 
 ![](WinDownly.png)
 **Authors:**  *WalWalWalides*
