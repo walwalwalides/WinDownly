@@ -26,6 +26,14 @@ Principal Software Benefits:
      - Receive a notification in your android App after every success downloading
      
      - Upload and download files through wireless communication
+     
+     
+     
+
+## Built With
+
+* [ExecutionMaster](https://github.com/diversenok/ExecutionMaster) - ExecutionMaster Library by ( diversenok )
+* [RealThinClient SDK](https://rtc.teppi.net/download/) - RealThinClient Library    
 
 
 ### Main View
