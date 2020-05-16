@@ -2,7 +2,7 @@ object frmMainServer: TfrmMainServer
   Left = 369
   Top = 185
   BorderStyle = bsSizeToolWin
-  Caption = 'MPP_Server'
+  Caption = 'WinDownly_Server'
   ClientHeight = 411
   ClientWidth = 309
   Color = clWhite
@@ -59,12 +59,12 @@ object frmMainServer: TfrmMainServer
       object lblLocalIp: TLabel
         AlignWithMargins = True
         Left = 3
-        Top = 332
+        Top = 335
         Width = 295
         Height = 16
         Align = alBottom
         Caption = 'lblLocalIp'
-        ExplicitTop = 335
+        ExplicitTop = 332
         ExplicitWidth = 58
       end
       object btnStart: TButton
@@ -207,8 +207,8 @@ object frmMainServer: TfrmMainServer
     Server = Server
     OnCheckRequest = RtcDataProvider1CheckRequest
     OnDataReceived = RtcDataProvider1DataReceived
-    Left = 256
-    Top = 128
+    Left = 40
+    Top = 160
   end
   object TrayIconApp: TRzTrayIcon
     HideOnStartup = True
@@ -648,14 +648,14 @@ object frmMainServer: TfrmMainServer
     FunctionName = 'GetFilename'
     OnExecute = fctGetFilenameExecute
     Left = 232
-    Top = 224
+    Top = 176
   end
   object RtcServerModule1: TRtcServerModule
     Link = RtcDataServerLink1
     ModuleFileName = '/mytest'
     FunctionGroup = fctAdmin
-    Left = 200
-    Top = 128
+    Left = 72
+    Top = 216
   end
   object RtcDataServerLink1: TRtcDataServerLink
     Server = Server
@@ -670,7 +670,7 @@ object frmMainServer: TfrmMainServer
     Group = fctAdmin
     FunctionName = 'GetUploadDone'
     OnExecute = fctGetUploadDoneExecute
-    Left = 240
-    Top = 184
+    Left = 144
+    Top = 152
   end
 end

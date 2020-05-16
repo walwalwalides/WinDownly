@@ -1,18 +1,36 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
-    <Transaction>1899.12.30 00:00:00.000.168,=C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\Tools\uFileChecker.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.619,C:\Users\Walid\Desktop\WinDownly\WinDownly\SerMMP\ServerContainerU.pas=</Transaction>
     <Transaction>1899.12.30 00:00:00.000.531,=C:\Users\Walid\Desktop\WinDownly\WinDownly\SerMMP\ServerContainerU.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.888,C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\LogServer\LogServer.pas=C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\LogServer\uMain.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.065,C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\Server_MainForm.pas=C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\MainServer.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.278,C:\Users\Walid\Desktop\WinDownly\WinDownly\ServerApp.dproj=C:\Users\Walid\Desktop\WinDownly\WinDownly\WinDownly.dproj</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.888,C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\LogServer\LogServer.dfm=C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\LogServer\uMain.dfm</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.801,=C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\DNetLog\DNLog.Types.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.335,C:\Users\Walid\Desktop\AndroidNotificationServiceDemo\SerMMP\SerMMP.dproj=C:\Users\Walid\Desktop\AndroidNotificationServiceDemo\SerMMP\ServerApp.dproj</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.642,=C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\DNetLog\DNLog.Server.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.065,C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\Server_MainForm.dfm=C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\MainServer.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.619,C:\Users\Walid\Desktop\WinDownly\WinDownly\SerMMP\ServerContainerU.pas=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.168,=C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\Tools\uFileChecker.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.278,C:\Users\Walid\Desktop\WinDownly\WinDownly\WinDownly.dproj=C:\Users\Walid\Desktop\WinDownly\WinDownly\ServerApp.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.065,C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\MainServer.dfm=C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\Server_MainForm.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.335,C:\Users\Walid\Desktop\AndroidNotificationServiceDemo\SerMMP\ServerApp.dproj=C:\Users\Walid\Desktop\AndroidNotificationServiceDemo\SerMMP\SerMMP.dproj</Transaction>
     <Transaction>1899.12.30 00:00:00.000.628,=C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\Tools\uFileUtils.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.801,=C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\DNetLog\DNLog.Types.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.642,=C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\DNetLog\DNLog.Server.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.065,C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\MainServer.pas=C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\Server_MainForm.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.954,=C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\LogServer\uMain.pas</Transaction>
-  </Transactions>
+    <Transaction>1899.12.30 00:00:00.000.888,C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\LogServer\uMain.pas=C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\LogServer\LogServer.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.888,C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\LogServer\uMain.dfm=C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\LogServer\LogServer.dfm</Transaction>
+  </Transactions>  <ProjectSortOrder AutoSort="0" SortType="0">
+    <File Path="Class"/>
+    <File Path="Class\unitGame.pas"/>
+    <File Path="Class\unitGamePlayer.pas"/>
+    <File Path="DNetLog"/>
+    <File Path="DNetLog\DNLog.Server.pas"/>
+    <File Path="DNetLog\DNLog.Types.pas"/>
+    <File Path="LogServer"/>
+    <File Path="LogServer\LogServer.pas"/>
+    <File Path="LogServer\LogServer.dfm"/>
+    <File Path="Tools"/>
+    <File Path="Tools\rtcMessenger.pas"/>
+    <File Path="Tools\rtcMessengerProvider.pas"/>
+    <File Path="Tools\rtcMessengerProvider.dfm"/>
+    <File Path="Tools\uFileChecker.pas"/>
+    <File Path="Tools\uFileUtils.pas"/>
+    <File Path="MainServer.pas"/>
+    <File Path="MainServer.dfm"/>
+  </ProjectSortOrder>
 </BorlandProject>
