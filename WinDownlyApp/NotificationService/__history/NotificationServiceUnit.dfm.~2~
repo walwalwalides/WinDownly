@@ -1,0 +1,17 @@
+object NotificationServiceDM: TNotificationServiceDM
+  OldCreateOrder = False
+  OnStartCommand = AndroidServiceStartCommand
+  Height = 238
+  Width = 324
+  object NotificationCenter1: TNotificationCenter
+    Left = 80
+    Top = 32
+  end
+  object IdTrivialFTP1: TIdTrivialFTP
+    Host = '192.168.7.137'
+    Port = 69
+    ReceiveTimeout = 4000
+    Left = 85
+    Top = 133
+  end
+end

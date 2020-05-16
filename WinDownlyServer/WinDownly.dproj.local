@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>1899.12.30 00:00:00.000.168,=C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\Tools\uFileChecker.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.619,C:\Users\Walid\Desktop\WinDownly\WinDownly\SerMMP\ServerContainerU.pas=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.531,=C:\Users\Walid\Desktop\WinDownly\WinDownly\SerMMP\ServerContainerU.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.888,C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\LogServer\LogServer.pas=C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\LogServer\uMain.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.065,C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\Server_MainForm.pas=C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\MainServer.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.278,C:\Users\Walid\Desktop\WinDownly\WinDownly\ServerApp.dproj=C:\Users\Walid\Desktop\WinDownly\WinDownly\WinDownly.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.888,C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\LogServer\LogServer.dfm=C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\LogServer\uMain.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.801,=C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\DNetLog\DNLog.Types.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.335,C:\Users\Walid\Desktop\AndroidNotificationServiceDemo\SerMMP\SerMMP.dproj=C:\Users\Walid\Desktop\AndroidNotificationServiceDemo\SerMMP\ServerApp.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.642,=C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\DNetLog\DNLog.Server.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.065,C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\Server_MainForm.dfm=C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\MainServer.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.628,=C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\Tools\uFileUtils.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.954,=C:\ProgIDE\Projekt\SoftProject\Delphi\MMP_Collection\SerMMP\LogServer\uMain.pas</Transaction>
+  </Transactions>
+</BorlandProject>

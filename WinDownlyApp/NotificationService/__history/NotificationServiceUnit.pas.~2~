@@ -1,0 +1,269 @@
+// ---------------------------------------------------------------------------
+// Copyright (c) 2016 Embarcadero Technologies, Inc. All rights reserved.
+//
+// This software is the copyrighted property of Embarcadero Technologies, Inc.
+// ("Embarcadero") and its licensors. You may only use this software if you
+// are an authorized licensee of Delphi, C++Builder or RAD Studio
+// (the "Embarcadero Products").  This software is subject to Embarcadero's
+// standard software license and support agreement that accompanied your
+// purchase of the Embarcadero Products and is considered a Redistributable,
+// as such term is defined thereunder. Your use of this software constitutes
+// your acknowledgement of your agreement to the foregoing software license
+// and support agreement.
+// ---------------------------------------------------------------------------
+unit NotificationServiceUnit;
+
+interface
+
+uses
+  System.SysUtils,
+  System.Classes,
+  System.Android.Service,
+  AndroidApi.JNI.GraphicsContentViewText,
+  AndroidApi.JNI.Os, System.Notification,Androidapi.JNI.App,IdUDPClient, IdTrivialFTP, FMX.DialogService.Async, System.zip,
+  IdBaseComponent, IdComponent, IdUDPBase;
+
+type
+  TNotificationServiceDM = class(TAndroidService)
+    NotificationCenter1: TNotificationCenter;
+    IdTrivialFTP1: TIdTrivialFTP;
+    function AndroidServiceStartCommand(const Sender: TObject;
+      const Intent: JIntent; Flags, StartId: Integer): Integer;
+  private
+    { Private declarations }
+    FThread: TThread;
+
+    FAlarmIntent: JPendingIntent;
+    FInterval: Int64;
+    procedure CreateAlarmIntent(const AAction: string);
+    procedure SetAlarm(const AAction: string; AStartAt: Int64 = 0;
+      AInterval: Int64 = 0);
+    procedure SetDailyAlarm(const AAction: string; const AStartAt: Int64);
+    procedure StopAlarm;
+
+    procedure LaunchNotification;
+    procedure DownloadFileUDP;
+    function OnCreateDecompressStream(const AInStream: TStream; const AZipFile: TZipFile; const AHeader: TZipHeader;
+      AIsEncrypted: Boolean): TStream;
+  public
+    { Public declarations }
+  end;
+
+var
+  NotificationServiceDM: TNotificationServiceDM;
+
+implementation
+
+{%CLASSGROUP 'FMX.Controls.TControl'}
+
+uses
+   System.DateUtils,
+  Androidapi.Helpers, Androidapi.JNI.JavaTypes,System.IOUtils,rtcInfo;
+
+const
+ cReceiverName = 'com.delphiworlds.kastri.DWMultiBroadcastReceiver';
+ cServiceName = 'com.embarcadero.services.ScheduledService';
+ cActionServiceAlarm = cReceiverName + '.ACTION_SERVICE_ALARM';
+
+{$R *.dfm}
+
+function SecondsUntilMidnight: Int64;
+begin
+  Result := SecondsBetween(Now, Trunc(Now + 1));
+end;
+
+function GetTimeFromNowInMillis(const ASeconds: Integer): Int64;
+var
+  LCalendar: JCalendar;
+begin
+  LCalendar := TJCalendar.JavaClass.getInstance;
+  if ASeconds > 0 then
+    LCalendar.add(TJCalendar.JavaClass.SECOND, ASeconds);
+  Result := LCalendar.getTimeInMillis;
+end;
+
+function GetMidnightInMillis: Int64;
+begin
+  Result := GetTimeFromNowInMillis(SecondsUntilMidnight);
+end;
+
+procedure TNotificationServiceDM.CreateAlarmIntent(const AAction: string);
+var
+  LActionIntent: JIntent;
+begin
+  LActionIntent := TJIntent.JavaClass.init(StringToJString(AAction));
+  LActionIntent.setClassName(TAndroidHelper.Context.getPackageName,
+    StringToJString(cReceiverName));
+  LActionIntent.putExtra(StringToJString('ServiceName'),
+    StringToJString(cServiceName));
+  FAlarmIntent := TJPendingIntent.JavaClass.getBroadcast(TAndroidHelper.Context,
+    0, LActionIntent, TJPendingIntent.JavaClass.FLAG_CANCEL_CURRENT);
+end;
+
+procedure TNotificationServiceDM.SetAlarm(const AAction: string;
+  AStartAt: Int64 = 0; AInterval: Int64 = 0);
+begin
+  if AStartAt = 0 then
+    AStartAt := GetTimeFromNowInMillis(0);
+  StopAlarm;
+  FInterval := AInterval;
+  CreateAlarmIntent(AAction);
+  if FInterval > 0 then
+  begin
+    // Allow for alarms while in "doze" mode
+    if TOSVersion.Check(6) then
+      TAndroidHelper.AlarmManager.setExactAndAllowWhileIdle
+        (TJAlarmManager.JavaClass.RTC_WAKEUP, GetTimeFromNowInMillis(AInterval),
+        FAlarmIntent)
+    else
+      TAndroidHelper.AlarmManager.setRepeating
+        (TJAlarmManager.JavaClass.RTC_WAKEUP, AStartAt, AInterval,
+        FAlarmIntent);
+  end
+  else
+    TAndroidHelper.AlarmManager.&set(TJAlarmManager.JavaClass.RTC_WAKEUP,
+      AStartAt, FAlarmIntent);
+end;
+
+procedure TNotificationServiceDM.SetDailyAlarm(const AAction: string;
+  const AStartAt: Int64);
+begin
+  SetAlarm(AAction, AStartAt, TJAlarmManager.JavaClass.INTERVAL_DAY);
+end;
+
+procedure TNotificationServiceDM.StopAlarm;
+begin
+  if FAlarmIntent <> nil then
+    TAndroidHelper.AlarmManager.cancel(FAlarmIntent);
+  FAlarmIntent := nil;
+end;
+
+function TNotificationServiceDM.OnCreateDecompressStream(const AInStream: TStream;
+const AZipFile: TZipFile; const AHeader: TZipHeader;
+AIsEncrypted: Boolean): TStream;
+begin
+  try
+    if AIsEncrypted then
+    begin
+      // Perform decrypt operation on AInStream. For example, you can use your own implementation of CryptZip or AES-256.
+      // Result := DecryptedStream;
+    end
+    else
+      Result := AInStream;
+  except
+    on E: Exception do
+    begin
+      Result := AInStream;
+    end;
+  end;
+end;
+
+
+procedure TNotificationServiceDM.DownloadFileUDP;
+var
+  ST: TMemoryStream;
+  sPAthZip: string;
+  sPAthDB: string;
+  myZipFile: TZipFile;
+{$IFDEF WIN32}
+  SevenZip1: TipzSevenZip;
+{$ENDIF}
+begin
+
+{$IF DEFINED(IOS) or DEFINED(ANDROID)}
+  sPAthDB := TPath.GetDocumentsPath + PathDelim + 'PackageDB';
+{$ELSE}
+  sPAthDB := 'PackageDB';
+{$ENDIF}
+{$IF DEFINED(IOS) or DEFINED(ANDROID)}
+  sPAthZip := TPath.GetDocumentsPath + PathDelim + 'PackageDB.sqb.zip';
+{$ELSE}
+  sPAthZip := 'PackageDB.sqb.zip';
+{$ENDIF}
+  // if not DirectoryExists(sPAthZip) then
+  // ForceDirectories(sPAthZip);
+
+  ST := TMemoryStream.Create;
+  IdTrivialFTP1.Get('PackageDB.sqb.zip', ST);
+
+  if Assigned(ST) then
+  begin
+    ST.SaveToFile(sPAthZip);
+
+    // ShowMessage('Filesize=' + IntToStr(ST.Size));
+    FreeAndNil(ST);
+
+//    UDPLogAct(2);
+
+    // {$IF DEFINED(IOS) or DEFINED(ANDROID)}
+    myZipFile := TZipFile.Create;
+    myZipFile.OnCreateDecompressStream := OnCreateDecompressStream;
+    try
+      myZipFile.Open(sPAthZip, zmRead);
+      myZipFile.ExtractAll(sPAthDB);
+      myZipFile.Close;
+    finally
+      myZipFile.free;
+
+
+    end;
+    if File_Exists(sPAthZip) then
+    begin
+      LaunchNotification;
+      DeleteFile(sPAthZip);
+    end;
+
+    // {$ELSE}
+    // try
+    // SevenZip1:=TipzSevenZip.create(nil);
+    // SevenZip1.Reset;
+    // SevenZip1.ArchiveFile := sPAthZip;
+    // SevenZip1.Scan;
+    // SevenZip1.ExtractToPath := sPAthDB;
+    // try
+    // SevenZip1.ExtractAll;
+    // finally
+    //
+    // end;
+    //
+    // except
+    // on E: EipzSevenZip do
+    // ShowMessage(E.Message);
+    // end;
+    //
+    // FreeAndNil(SevenZip1);
+    // {$ENDIF}
+    //
+  end;
+
+end;
+
+
+
+function TNotificationServiceDM.AndroidServiceStartCommand
+  (const Sender: TObject; const Intent: JIntent;
+  Flags, StartId: Integer): Integer;
+begin
+
+  DownloadFileUDP;
+  JavaService.stopSelf;
+  Result := TJService.JavaClass.START_STICKY;
+end;
+
+procedure TNotificationServiceDM.LaunchNotification;
+var
+  MyNotification: TNotification;
+begin
+  MyNotification := NotificationCenter1.CreateNotification;
+  try
+    MyNotification.Name := 'ServiceNotification';
+    MyNotification.Title := 'Android Service Notification';
+    MyNotification.AlertBody := 'RAD Studio 10 Seattle';
+    MyNotification.FireDate := IncSecond(Now, 8);
+    NotificationCenter1.ScheduleNotification(MyNotification);
+  finally
+    MyNotification.Free;
+  end;
+end;
+
+end.

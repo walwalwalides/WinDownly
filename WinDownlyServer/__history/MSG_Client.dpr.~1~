@@ -1,0 +1,28 @@
+program MSG_Client;
+
+{$include rtcDefs.inc}
+{$include rtcDeploy.inc}
+
+uses
+  {$IFDEF RtcDeploy}
+  {$IFNDEF IDE_2006up}
+  FastMM4,
+  {$ENDIF }
+  {$ENDIF }
+  Forms,
+  Client_ChatForm in 'Client_ChatForm.pas' {ChatForm},
+  UploadPackage in 'UploadPackage.pas' {frmUploadPackage};
+
+{$R *.res}
+{$R knock.res}
+{$R door.res}
+{$R click.res}
+{$R chimeup.res}
+{$R doorbell.res}
+{$R eingang.res}
+
+begin
+  Application.Initialize;
+  Application.CreateForm(TfrmUploadPackage, frmUploadPackage);
+  Application.Run;
+end.

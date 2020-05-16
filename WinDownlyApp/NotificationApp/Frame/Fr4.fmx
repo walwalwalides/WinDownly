@@ -1,0 +1,35 @@
+object F4: TF4
+  Size.Width = 325.000000000000000000
+  Size.Height = 603.000000000000000000
+  Size.PlatformDefault = False
+  object CornerButton1: TCornerButton
+    Align = MostBottom
+    StyledSettings = [Family, Size, FontColor]
+    Position.Y = 558.000000000000000000
+    Sides = [Top, Left, Bottom, Right]
+    Size.Width = 325.000000000000000000
+    Size.Height = 45.000000000000000000
+    Size.PlatformDefault = False
+    StyleLookup = 'btnIdle'
+    TabOrder = 1
+    Text = 'LOGOUT'
+    TextSettings.Font.StyleExt = {00070000000000000004000000}
+    XRadius = 3.000000000000000000
+    YRadius = 3.000000000000000000
+    OnClick = CornerButton1Click
+  end
+  object Label1: TLabel
+    Align = Top
+    AutoSize = True
+    StyledSettings = [Family]
+    Size.Width = 325.000000000000000000
+    Size.Height = 34.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.Font.Size = 25.000000000000000000
+    TextSettings.Font.StyleExt = {00070000000000000004000000}
+    TextSettings.FontColor = xFF33A393
+    TextSettings.HorzAlign = Center
+    Text = 'WinDownly'
+    TabOrder = 0
+  end
+end

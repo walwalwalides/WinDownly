@@ -1,0 +1,41 @@
+object Server383: TServer383
+  OldCreateOrder = False
+  DisplayName = '383 Server '#169' 2019'
+  OnStart = ServiceStart
+  Height = 284
+  Width = 433
+  object DSServer: TDSServer
+    AutoStart = False
+    Left = 168
+    Top = 203
+  end
+  object DSTCPServerTransport1: TDSTCPServerTransport
+    PoolSize = 0
+    Server = DSServer
+    Filters = <>
+    Left = 248
+    Top = 153
+  end
+  object DSHTTPService1: TDSHTTPService
+    HttpPort = 8080
+    Server = DSServer
+    DSHostname = '127.0.0.1'
+    Filters = <>
+    AuthenticationManager = DSAuthenticationManager1
+    Left = 56
+    Top = 207
+  end
+  object DSAuthenticationManager1: TDSAuthenticationManager
+    OnUserAuthenticate = DSAuthenticationManager1UserAuthenticate
+    Roles = <>
+    Left = 168
+    Top = 121
+  end
+  object DSServerClass1: TDSServerClass
+    OnGetClass = DSServerClass1GetClass
+    Server = DSServer
+    LifeCycle = 'Invocation'
+    Left = 88
+    Top = 123
+  end
+end

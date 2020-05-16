@@ -1,0 +1,123 @@
+unit ServerContainerU;
+
+interface
+
+uses
+  SysUtils, Classes, 
+  SvcMgr, 
+  DSTCPServerTransport,
+  DSServer, DSCommonServer, DSAuth, IPPeerServer,MidasLib, Datasnap.DSHTTP;
+
+type
+  TServer383 = class(TService)
+    DSServer: TDSServer;
+    DSTCPServerTransport1: TDSTCPServerTransport;
+    DSHTTPService1: TDSHTTPService;
+    DSAuthenticationManager1: TDSAuthenticationManager;
+    DSServerClass1: TDSServerClass;
+    procedure DSServerClass1GetClass(DSServerClass: TDSServerClass;
+      var PersistentClass: TPersistentClass);
+    procedure ServiceStart(Sender: TService; var Started: Boolean);
+
+    procedure DSAuthenticationManager1UserAuthenticate(Sender: TObject; const Protocol, Context, User, Password: string; var valid: Boolean;
+      UserRoles: TStrings);
+  private
+    procedure CheckPort_IP;
+    { Private declarations }
+  protected
+    function DoStop: Boolean; override;
+    function DoPause: Boolean; override;
+    function DoContinue: Boolean; override;
+    procedure DoInterrogate; override;
+  public
+    function GetServiceController: TServiceController; override;
+  end;
+
+var
+  Server383: TServer383;
+
+implementation
+
+uses Windows,  ServerMethodsU;
+
+{$R *.dfm}
+
+procedure TServer383.CheckPort_IP;
+var
+tmp:TServerMethods;
+begin
+  //
+  tmp:=TServerMethods.Create(nil);
+  tmp.qrRestConnection.close;
+  tmp.qrRestConnection.SQL.Clear;
+  tmp.qrRestConnection.SQL.Text := 'SELECT * FROM RestSS383';
+  tmp.qrRestConnection.Open;
+  if (tmp.qrRestConnection.recordcount <= 0) then
+  begin
+    tmp.qrRestConnection.Append;
+    tmp.qrRestConnectionIP.AsString := DSHTTPService1.DSHostname;
+    tmp.qrRestConnectionPORT.AsInteger :=DSHTTPService1.HttpPort;
+    tmp.qrRestConnection.Post;
+  end
+  else
+  begin
+    DSHTTPService1.DSHostname := tmp.qrRestConnectionIP.AsString;
+    DSHTTPService1.HttpPort := tmp.qrRestConnectionPORT.AsInteger;
+  end;
+  tmp.qrRestConnection.close;
+  tmp.Free;
+end;
+
+procedure TServer383.DSAuthenticationManager1UserAuthenticate(Sender: TObject; const Protocol, Context, User, Password: string; var valid: Boolean; UserRoles: TStrings);
+begin
+ valid := True;
+end;
+
+procedure TServer383.DSServerClass1GetClass(
+  DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
+begin
+  PersistentClass := TServerMethods;
+
+end;
+
+procedure ServiceController(CtrlCode: DWord); stdcall;
+begin
+  Server383.Controller(CtrlCode);
+end;
+
+function TServer383.GetServiceController: TServiceController;
+begin
+  Result := ServiceController;
+end;
+
+function TServer383.DoContinue: Boolean;
+begin
+  Result := inherited;
+  DSServer.Start;
+end;
+
+procedure TServer383.DoInterrogate;
+begin
+  inherited;
+end;
+
+function TServer383.DoPause: Boolean;
+begin
+  DSServer.Stop;
+  Result := inherited;
+end;
+
+function TServer383.DoStop: Boolean;
+begin
+  DSServer.Stop;
+  Result := inherited;
+end;
+
+procedure TServer383.ServiceStart(Sender: TService; var Started: Boolean);
+begin
+  CheckPort_IP;
+  DSServer.Start;
+end;
+
+end.
+

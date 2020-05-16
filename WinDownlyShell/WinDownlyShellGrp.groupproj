@@ -1,0 +1,60 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{62DE79E6-63F2-45E1-B969-BA2B9CE959A8}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="WinDownlyShell.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Download\Download.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Update\Upload.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="WinDownlyShell">
+        <MSBuild Projects="WinDownlyShell.dproj"/>
+    </Target>
+    <Target Name="WinDownlyShell:Clean">
+        <MSBuild Projects="WinDownlyShell.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="WinDownlyShell:Make">
+        <MSBuild Projects="WinDownlyShell.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Download">
+        <MSBuild Projects="Download\Download.dproj"/>
+    </Target>
+    <Target Name="Download:Clean">
+        <MSBuild Projects="Download\Download.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Download:Make">
+        <MSBuild Projects="Download\Download.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Upload">
+        <MSBuild Projects="Update\Upload.dproj"/>
+    </Target>
+    <Target Name="Upload:Clean">
+        <MSBuild Projects="Update\Upload.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Upload:Make">
+        <MSBuild Projects="Update\Upload.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="WinDownlyShell;Download;Upload"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="WinDownlyShell:Clean;Download:Clean;Upload:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="WinDownlyShell:Make;Download:Make;Upload:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

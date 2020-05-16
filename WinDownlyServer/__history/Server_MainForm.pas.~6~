@@ -1,0 +1,280 @@
+unit Server_MainForm;
+
+interface
+
+uses
+  Windows, Messages, SysUtils,
+  Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ExtCtrls,
+
+  rtcTypes, rtcInfo, rtcConn,
+  rtcHttpSrv, rtcDataSrv,
+
+  rtcMessengerProvider, RzTray, System.Actions, Vcl.ActnList, System.ImageList,
+  Vcl.ImgList, Vcl.Menus, IPPeerClient, IPPeerServer, System.Tether.Manager,
+  System.Tether.AppProfile, REST.Json;
+
+type
+  TServerMain = class(TForm)
+    btnStart: TButton;
+    btnStop: TButton;
+    Server: TRtcHttpServer;
+    pInfo: TPanel;
+    Label1: TLabel;
+    ePort: TEdit;
+    xIPv6: TCheckBox;
+    eUploadFolder: TEdit;
+    Label2: TLabel;
+    RtcDataProvider1: TRtcDataProvider;
+    RzTrayIcon1: TRzTrayIcon;
+    PopupMenu: TPopupMenu;
+    AboutBtn: TMenuItem;
+    LineItem: TMenuItem;
+    ExitBtn: TMenuItem;
+    Icons: TImageList;
+    actlstNOt: TActionList;
+    CloseApplication: TAction;
+    AboutApplication: TAction;
+    TetheringManager1: TTetheringManager;
+    TetheringAppProfile1: TTetheringAppProfile;
+    Button1: TButton;
+    ActionList1: TActionList;
+    actGetScores: TAction;
+    procedure btnStartClick(Sender: TObject);
+    procedure btnStopClick(Sender: TObject);
+    procedure ServerListenStart(Sender: TRtcConnection);
+    procedure ServerListenStop(Sender: TRtcConnection);
+    procedure ServerRequestNotAccepted(Sender: TRtcConnection);
+    procedure RtcDataProvider1CheckRequest(Sender: TRtcConnection);
+    procedure RtcDataProvider1DataReceived(Sender: TRtcConnection);
+    procedure FormShow(Sender: TObject);
+    procedure CloseApplicationExecute(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure TetheringAppProfile1ResourceReceived(const Sender: TObject;
+      const AResource: TRemoteResource);
+    procedure Button1Click(Sender: TObject);
+    procedure actGetScoresExecute(Sender: TObject);
+  private
+    procedure UpdateDB;
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+const
+  csDir = 'DataBase\';
+  csDB = 'PackageDB.sqb';
+
+var
+  ServerMain: TServerMain;
+  boolClose: Boolean = false;
+
+implementation
+
+uses
+  unitGame, unitGamePlayer;
+
+{$R *.dfm}
+
+function GetFullFileName(fname: string): string;
+var
+  DocRoot: string;
+begin
+  // Get the executable file's folder name ...
+  DocRoot := ExtractFilePath(AppFileName);
+  // Make sure the file doesn't end with '\' ...
+  if Copy(DocRoot, length(DocRoot), 1) = '\' then
+    Delete(DocRoot, length(DocRoot), 1);
+  // We want to use a sub-folder named '\data' ...
+  DocRoot := DocRoot + '\data';
+  // Requests use "/" instead of "\" ...
+  fname := StringReplace(fname, '/', '\', [rfreplaceall]);
+  // Create file name containing full path
+  Result := ExpandFileName(DocRoot + fname);
+  // Check if the file is inside our folder
+  // (don't want people to use "..\" to
+  // move out of this folder)
+  if UpperCase(Copy(Result, 1, length(DocRoot))) <> UpperCase(DocRoot) then
+    Result := ''; // return empty file name.
+end;
+
+procedure TServerMain.actGetScoresExecute(Sender: TObject);
+begin
+UpdateDB;
+
+
+
+
+
+
+end;
+
+procedure TServerMain.btnStartClick(Sender: TObject);
+begin
+  GetMessengerProvider.ServerLink.Server := Server;
+  Server.ServerIPV := GetRtcIPV(xIPv6.Checked);
+  Server.ServerPort := RtcString(ePort.Text);
+  Server.Listen;
+end;
+
+procedure TServerMain.btnStopClick(Sender: TObject);
+begin
+  Server.StopListen;
+end;
+
+procedure TServerMain.Button1Click(Sender: TObject);
+begin
+UpdateDB;
+end;
+
+procedure TServerMain.UpdateDB;
+var
+  MS: TMemoryStream;
+  SFile:String;
+begin
+  sFile:=ExtractFilePath(application.ExeName)+csDir+csDB;
+  MS := TMemoryStream.Create;
+  MS.LoadFromFile(sFile);
+  // Layout1.MakeScreenShot.SaveToStream(MS);
+  MS.Seek(0, 0);
+  if TetheringManager1.RemoteProfiles.Count > 0 then
+    TetheringAppProfile1.SendStream(TetheringManager1.RemoteProfiles[0],
+      'TGamePlayer', MS);
+  MS.Free;
+end;
+
+procedure TServerMain.CloseApplicationExecute(Sender: TObject);
+begin
+  btnStopClick(nil);
+  application.terminate;
+end;
+
+procedure TServerMain.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+begin
+  CanClose := boolClose;
+  if not(boolClose) then
+    application.Minimize;
+end;
+
+procedure TServerMain.FormShow(Sender: TObject);
+begin
+  btnStartClick(nil);
+end;
+
+procedure TServerMain.RtcDataProvider1CheckRequest(Sender: TRtcConnection);
+var
+  fname: string;
+  stest: string;
+begin
+
+  with TRtcDataServer(Sender) do
+  begin
+    stest := Request.FileName;
+    if (Request.Method = 'PUT') and (UpperCase(Request.FileName) = '/DATABASE')
+      and (Request.Query['file'] <> '') then
+    begin
+      fname := GetFullFileName(Request.FileName);
+      Request.Info.asText['file'] := eUploadFolder.Text + '\' +
+        Utf8Decode(URL_Decode(Request.Query['file']));
+      Accept;
+
+    end;
+  end;
+
+end;
+
+procedure TServerMain.RtcDataProvider1DataReceived(Sender: TRtcConnection);
+var
+  s: RtcString;
+begin
+  with TRtcDataServer(Sender) do
+  begin
+    if Request.Started then
+    begin
+      if not DirectoryExists(eUploadFolder.Text) then
+        CreateDir(eUploadFolder.Text);
+      Delete_File(Request.Info.asText['file']);
+    end;
+    s := Read;
+    Write_File(Request.Info.asText['file'], s, Request.ContentIn - length(s));
+
+    if Request.Complete then
+    begin
+      { We have the complete request content here (the complete file).
+        We can could process the file (now stored locally) and send a response
+        to the Client letting the client know how our processing went. }
+      Response.Status(200, 'OK'); // Set response status to a standard "OK"
+      Write('Thanks for the file.');
+      // Send a short message to let the client know how we did.
+      Write('Current time is: ' + TimeToStr(Now));
+    end;
+  end;
+
+end;
+
+procedure TServerMain.ServerListenStart(Sender: TRtcConnection);
+begin
+  btnStart.Enabled := false;
+  btnStop.Enabled := True;
+  pInfo.Caption := 'Server Ready.';
+end;
+
+procedure TServerMain.ServerListenStop(Sender: TRtcConnection);
+begin
+  btnStart.Enabled := True;
+  btnStop.Enabled := false;
+  pInfo.Caption := 'Server not Listening.';
+end;
+
+procedure TServerMain.ServerRequestNotAccepted(Sender: TRtcConnection);
+begin
+  with TRtcDataServer(Sender) do
+    if Request.Complete then
+    begin
+      Response.Status(301, 'Invalid request');
+      Write;
+    end;
+end;
+
+procedure TServerMain.TetheringAppProfile1ResourceReceived
+  (const Sender: TObject; const AResource: TRemoteResource);
+var
+  Player: TGamePlayer;
+  Stream: Tstream;
+  MS: TMemoryStream;
+  SFile:String;
+begin
+  sFile:=ExtractFilePath(application.ExeName)+csDir+csDB;
+  if AResource.ResType = TRemoteResourceType.Data then
+  begin
+    // Take the string value, convert to the object and add to the dataset.
+    Player := TJson.JsonToObject<TGamePlayer>(AResource.Value.AsString);
+
+    // if tableScores.Locate('Name', Player.Name, [loCaseInsensitive]) then
+    // tableScores.Edit
+    // else
+    // begin
+    // tableScores.Insert;
+    // tableScoresName.AsString := Player.Name;
+    // end;
+    // tableScoresScore.AsInteger := Player.Score;
+    // tableScores.Post;
+  end;
+
+  if AResource.ResType = TRemoteResourceType.Stream then
+  begin
+    // Take the string value, convert to the object and add to the dataset.
+    Stream := AResource.Value.AsStream;
+    MS := TMemoryStream.Create;
+    try
+      MS.LoadFromStream(Stream);
+      MS.SaveToFile(sFile);
+    finally
+      FreeAndNil(MS);
+    end;
+
+  end;
+
+end;
+
+end.

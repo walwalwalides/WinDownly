@@ -1,0 +1,5 @@
+object F3: TF3
+  Size.Width = 320.000000000000000000
+  Size.Height = 646.000000000000000000
+  Size.PlatformDefault = False
+end

@@ -1,0 +1,39 @@
+program SerMMP;
+
+{$include rtcDefs.inc}
+{$include rtcDeploy.inc}
+
+uses
+  {$IFDEF RtcDeploy}
+  {$IFNDEF IDE_2006up}
+  FastMM4,
+  {$ENDIF }
+  {$ENDIF }
+  Forms,
+  Server_MainForm in 'Server_MainForm.pas' {ServerMain},
+  rtcMessenger in 'Tools\rtcMessenger.pas',
+  rtcMessengerProvider in 'Tools\rtcMessengerProvider.pas' {Messenger_Provider: TDataModule},
+  unitGame in 'Class\unitGame.pas',
+  unitGamePlayer in 'Class\unitGamePlayer.pas';
+
+{$R *.res}
+
+begin
+//      if (ParamCount = 0) then
+//    Exit;
+//
+//  case ParamCount of
+//    1:
+//      if (ParamStr(1) = 'Notify') then
+//      begin
+//        //
+//      end
+//      else
+//        Exit;
+//  end;
+
+
+  Application.Initialize;
+  Application.CreateForm(TServerMain, ServerMain);
+  Application.Run;
+end.

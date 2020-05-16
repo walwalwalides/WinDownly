@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{36741966-24AF-4B32-8284-785278C90288}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="NotificationService\NotificationService.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="NotificationApp\WinDownly.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="NotificationService">
+        <MSBuild Projects="NotificationService\NotificationService.dproj"/>
+    </Target>
+    <Target Name="NotificationService:Clean">
+        <MSBuild Projects="NotificationService\NotificationService.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="NotificationService:Make">
+        <MSBuild Projects="NotificationService\NotificationService.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="WinDownly">
+        <MSBuild Projects="NotificationApp\WinDownly.dproj"/>
+    </Target>
+    <Target Name="WinDownly:Clean">
+        <MSBuild Projects="NotificationApp\WinDownly.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="WinDownly:Make">
+        <MSBuild Projects="NotificationApp\WinDownly.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="NotificationService;WinDownly"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="NotificationService:Clean;WinDownly:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="NotificationService:Make;WinDownly:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
