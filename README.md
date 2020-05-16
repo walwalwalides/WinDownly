@@ -29,14 +29,14 @@ Principal Software Benefits:
 
 
 ### Main View
-![](Img/MainView_.png)
+![](Img_Res/ImgGithub/MainView_.png)
 
 
 
 ------
 
 ### Android View (WinDownly V 1.0.0 )
-![](Img/WinDownlyV1.png)
+![](Img_Res/ImgGithub/WinDownlyV1.png)
 
 
 
