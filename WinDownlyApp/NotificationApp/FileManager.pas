@@ -2,10 +2,10 @@
   Software Name : 	Windownly App
   ============================================ }
 { ******************************************** }
-{ Written By WalWalWalides                     }
-{ CopyRight © 2020                             }
-{ Email : WalWalWalides@gmail.com              }
-{ GitHub :https://github.com/walwalwalides     }
+{ Written By WalWalWalides }
+{ CopyRight © 2020 }
+{ Email : WalWalWalides@gmail.com }
+{ GitHub :https://github.com/walwalwalides }
 { ******************************************** }
 
 unit FileManager;
@@ -107,7 +107,6 @@ begin
   Result := CompareStr(AnsiLowerCase(Left), AnsiLowerCase(Right));
 end;
 
-{ Функция получения картинки из ImageBook'а(Автор: Ярослав Бровин) }
 function TfrmFileManager.GetImage(const AImageName: string): TBitmap;
 var
   StyleObject: TFmxObject;
@@ -117,14 +116,12 @@ begin
   if (StyleObject <> nil) and (StyleObject is TImage) then
   begin
     Image := StyleObject as TImage;
-    // Здесь мы получим картинку нужного dpi (Scale)
     Result := Image.Bitmap;
   end
   else
     Result := nil;
 end;
 
-{ Процедура для вставки массивов в ListBox }
 procedure TfrmFileManager.AddListItem(list: array of string; itype: string);
 var
   c: Integer;
@@ -158,7 +155,7 @@ begin
     end;
 
     LItem.ItemData.Text := ExtractFileName(list[c]);
-    LItem.ItemData.Detail := list[c]; // Помещаем полный путь в Detail
+    LItem.ItemData.Detail := list[c];
     LItem.TagString := itype;
     ListBox1.AddObject(LItem);
 
@@ -168,7 +165,6 @@ begin
 
 end;
 
-{ Функция для проверки введённого имени }
 function CheckName(NewName: string): boolean;
 const
   InvalidChars: Array [0 .. 9] of Char = ('\', '/', ':', '*', '?', '"', '<',
@@ -197,7 +193,6 @@ begin
 
 end;
 
-{ Отслеживаем ввод символов и проверяем их }
 procedure TfrmFileManager.DialogEditChangeTracking(Sender: TObject);
 begin
   if CheckName(DialogEdit.Text) then
@@ -206,13 +201,11 @@ begin
     DialogError.Text := '';
 end;
 
-{ Загружаем список файлов в корне устройства }
 procedure TfrmFileManager.FormCreate(Sender: TObject);
 begin
 {$IFDEF MSWINDOWS}
   self.Position := TFormPosition.MainFormCenter;
 {$ENDIF}
-  // Корень устройства
   path := '/';
   path := TPath.GetPicturesPath;
 {$IFDEF ANDROID}
@@ -231,7 +224,6 @@ begin
 
 end;
 
-{ Обрабатываем кнопки Hardware Back, Enter }
 procedure TfrmFileManager.FormKeyUp(Sender: TObject; var Key: Word;
   var KeyChar: Char; Shift: TShiftState);
 begin
@@ -249,18 +241,17 @@ begin
   begin
     if Key = vkHardwareBack then
     begin
-      SpeedButton5Click(self); // Вызываем кнопку Отмена
+      SpeedButton5Click(self); //
       Key := 0;
     end;
 
     if Key = 13 then
     begin
-      SpeedButton6Click(self); // Вызываем кнопку Создать
+      SpeedButton6Click(self); //
     end;
   end;
 end;
 
-{ Пункт пометили галкой }
 procedure TfrmFileManager.ListBox1ChangeCheck(Sender: TObject);
 var
   i: Integer;
@@ -274,9 +265,9 @@ begin
       (ListBox1.ListItems[i].TagString = 'file') then
     begin
       SetLength(ItemsCheck, i + 1, 3);
-      ItemsCheck[i][0] := ListBox1.ListItems[i].Text; // Имя
-      ItemsCheck[i][1] := ListBox1.ListItems[i].TagString; // Тип
-      ItemsCheck[i][2] := ListBox1.ListItems[i].ItemData.Detail; // Путь
+      ItemsCheck[i][0] := ListBox1.ListItems[i].Text;
+      ItemsCheck[i][1] := ListBox1.ListItems[i].TagString;
+      ItemsCheck[i][2] := ListBox1.ListItems[i].ItemData.Detail;
     end
     else if (ListBox1.ListItems[i].IsChecked) and
       (ListBox1.ListItems[i].TagString = 'folder') then
@@ -299,7 +290,6 @@ begin
 
 end;
 
-{ Клик по Item'у, вперёд }
 procedure TfrmFileManager.ListBox1ItemClick(const Sender: TCustomListBox;
   const Item: TListBoxItem);
 var
@@ -321,32 +311,28 @@ begin
     OnOffButton(False, False, False, False);
   end;
 
-  if Item.TagString = 'folder' then
+  if (Item.TagString = 'folder') then
   begin
 
-    // Сохраняем выбранный путь
     path := Item.ItemData.Detail;
 
-      if TDirectory.Exists(path) then
-      begin
+    if TDirectory.Exists(path) then
+    begin
       TotalWork(path, True);
-      end
-      else
-      begin
+    end
+    else
+    begin
       ListBox1.Items.Delete(Item.Index);
       ShowMessage('Folder not found!');
-      end;
-
+    end;
 
   end
-  else if Item.TagString = 'file' then
+  else if (Item.TagString = 'file') then
   begin
 
-    // Получаем путь до файла
     FileName := Item.ItemData.Detail;
 
     try
-      // Определяем расширение файла и его mime тип
 
 {$IFDEF ANDROID}
       ExtFile := AnsiLowerCase(StringReplace(TPath.GetExtension(FileName),
@@ -354,7 +340,6 @@ begin
       mime := TJMimeTypeMap.JavaClass.getSingleton();
       ExtToMime := mime.getMimeTypeFromExtension(StringToJString(ExtFile));
 
-      // Запрашиваем открытие файла
       Intent := TJIntent.Create;
       Intent.setAction(TJIntent.JavaClass.ACTION_VIEW);
       Intent.setDataAndType(StrToJURI('file:' + FileName), ExtToMime);
@@ -367,13 +352,12 @@ begin
   end;
 end;
 
-{ Управляем кнопками }
 procedure TfrmFileManager.OnOffButton(del, add, copy, cut: boolean);
 begin
-  SpeedButton2.Enabled := del; // кнопка Удаления
-  SpeedButton7.Enabled := add; // кнопка Вставить
-  SpeedButton8.Enabled := copy; // кнопка Копировать
-  SpeedButton9.Enabled := cut; // кнопка Вырезать
+  SpeedButton2.Enabled := del;
+  SpeedButton7.Enabled := add;
+  SpeedButton8.Enabled := copy;
+  SpeedButton9.Enabled := cut;
 end;
 
 procedure TfrmFileManager.spdbtnSelectClick(Sender: TObject);
@@ -411,10 +395,9 @@ begin
 
 end;
 
-{ Кнопка назад }
 procedure TfrmFileManager.spdbtnBackFolderClick(Sender: TObject);
 begin
-  // Определяем предыдущую папку
+
   path := ExtractFileDir(path);
 
   if path = '/' then
@@ -434,14 +417,13 @@ begin
   end;
 end;
 
-{ Кнопка удалить }
 procedure TfrmFileManager.SpeedButton2Click(Sender: TObject);
 var
-  i: Integer; // Устанавливаем счётчик
+  i: Integer;
   LItemPath: string;
   msg: Integer;
 begin
-  msg := MessageDlg('Удалить выбранные файлы?',
+  msg := MessageDlg('Do you have a separate file?',
     System.UITypes.TMsgDlgType.mtConfirmation, [System.UITypes.TMsgDlgBtn.mbYes,
     System.UITypes.TMsgDlgBtn.mbNo], 0);
 
@@ -453,15 +435,13 @@ begin
 
       if ItemsCheck[i][0] <> '' then
       begin
-        // Получаем путь из массива
         LItemPath := ItemsCheck[i][2];
-
         if ItemsCheck[i][1] = 'folder' then
         begin
 
           if TDirectory.Exists(LItemPath) then
           begin
-            TDirectory.Delete(LItemPath, True); // Удаляем папку и подпапки
+            TDirectory.Delete(LItemPath, True);
           end;
 
         end
@@ -470,36 +450,33 @@ begin
 
           if TFile.Exists(LItemPath) then
           begin
-            TFile.Delete(LItemPath); // Удаляем файл
+            TFile.Delete(LItemPath);
           end;
 
         end;
       end;
     end;
-    TotalWork(path, True); // Обновляем список
-    ListBox1ChangeCheck(self); // Чистим массив и т.д.
+    TotalWork(path, True);
+    ListBox1ChangeCheck(self);
   end;
 end;
 
-{ Кнопка для создания файла - выводим окно для ввода имени файла }
 procedure TfrmFileManager.SpeedButton3Click(Sender: TObject);
 begin
-  DialogTitle.Text := 'Введите имя файла';
+  DialogTitle.Text := 'Create a File';
   DialogEdit.TagString := 'CreateFile';
   DialogFon.Visible := True;
   Dialog.Visible := True;
 end;
 
-{ Кнопка для создания папки - выводим окно для ввода имени папки }
 procedure TfrmFileManager.SpeedButton4Click(Sender: TObject);
 begin
-  DialogTitle.Text := 'Введите имя папки';
+  DialogTitle.Text := 'Create a Folder';
   DialogEdit.TagString := 'CreateFolder';
   DialogFon.Visible := True;
   Dialog.Visible := True;
 end;
 
-{ Кастомное окно - кнопка Отмена - "закрываем" окно }
 procedure TfrmFileManager.SpeedButton5Click(Sender: TObject);
 begin
   DialogEdit.Text := '';
@@ -508,7 +485,6 @@ begin
   DialogFon.Visible := False;
 end;
 
-{ Кастомное окно - кнопка Создать - создаём папку или файл }
 procedure TfrmFileManager.SpeedButton6Click(Sender: TObject);
 var
   newpath: string;
@@ -517,13 +493,13 @@ begin
 
   if (Length(DialogEdit.Text) = 0) OR (DialogEdit.Text = ' ') then
   begin
-    DialogError.Text := 'Введите имя!';
+    DialogError.Text := 'Empty !';
     Exit;
   end;
 
   newpath := path + PathDelim + DialogEdit.Text;
 
-  if DialogEdit.TagString = 'CreateFile' then
+  if (DialogEdit.TagString = 'CreateFile') then
   begin
     if TFile.Exists(newpath) then
     begin
@@ -531,10 +507,10 @@ begin
     end
     else
     begin
-      newfile := TFile.Create(newpath); // Создаём файл(поток)
-      newfile.Free; // Очищаем поток
-      SpeedButton5Click(self); // Закрываем окно
-      TotalWork(path, True); // Обновляем список
+      newfile := TFile.Create(newpath);
+      newfile.Free;
+      SpeedButton5Click(self);
+      TotalWork(path, True);
     end;
   end
   else if DialogEdit.TagString = 'CreateFolder' then
@@ -545,18 +521,17 @@ begin
     end
     else
     begin
-      TDirectory.CreateDirectory(newpath); // Создаём папку
-      SpeedButton5Click(self); // Закрываем окно
-      TotalWork(path, True); // Обновляем список
+      TDirectory.CreateDirectory(newpath);
+      SpeedButton5Click(self);
+      TotalWork(path, True);
     end;
   end;
 end;
 
-{ кнопка Вставить }
 procedure TfrmFileManager.SpeedButton7Click(Sender: TObject);
 var
-  i: Integer; // Устанавливаем счётчик
-  LItemPath: string; // Старый путь до файла или папки
+  i: Integer;
+  LItemPath: string;
 begin
 
   for i := 0 to Length(ItemsCheck) - 1 do
@@ -564,7 +539,6 @@ begin
 
     if ItemsCheck[i][0] <> '' then
     begin
-      // Получаем путь из массива
       LItemPath := ItemsCheck[i][2];
 
       if ItemsCheck[i][1] = 'folder' then
@@ -573,16 +547,14 @@ begin
           if SpeedButton9.Tag <> 1 then
           begin
             TDirectory.copy(LItemPath, path + PathDelim + ItemsCheck[i][0]);
-            // Копируем папку
           end
           else
           begin
             TDirectory.Move(LItemPath, path + PathDelim + ItemsCheck[i][0]);
-            // Перемещаем папку
           end;
         except
-          ShowMessage('Копирование папки ' + ItemsCheck[i][0] +
-            ' не возможно!');
+          ShowMessage('Using the folder' + ItemsCheck[i][0] +
+            'is not possible !');
         end;
       end
       else if ItemsCheck[i][1] = 'file' then
@@ -591,35 +563,31 @@ begin
           if SpeedButton9.Tag <> 1 then
           begin
             TFile.copy(LItemPath, path + PathDelim + ItemsCheck[i][0], True);
-            // Копируем файл
           end
           else
           begin
             TFile.Move(LItemPath, path + PathDelim + ItemsCheck[i][0]);
-            // Перемещаем файл
           end;
         except
-          ShowMessage('Копирование файла ' + ItemsCheck[i][0] +
-            ' не возможно!');
+          ShowMessage('Using the file ' + ItemsCheck[i][0] +
+            ' is not possible !');
         end;
       end;
     end;
   end;
   SpeedButton9.Tag := 0;
-  TotalWork(path, True); // Обновляем список
-  ListBox1ChangeCheck(self); // Чистим массив и т.д.
+  TotalWork(path, True);
+  ListBox1ChangeCheck(self);
 end;
 
-{ кнопка Копировать }
 procedure TfrmFileManager.SpeedButton8Click(Sender: TObject);
 begin
-  if Length(ItemsCheck) <> 0 then
+  if (Length(ItemsCheck) <> 0) then
   begin
     ShowMessage('Not File Selected!');
   end;
 end;
 
-{ кнопка Вырезать/перместить }
 procedure TfrmFileManager.SpeedButton9Click(Sender: TObject);
 begin
   if Length(ItemsCheck) <> 0 then // cut file
@@ -629,42 +597,23 @@ begin
   end;
 end;
 
-{ Основа для обработки перемещений по папкам }
 procedure TfrmFileManager.TotalWork(path_tr: string; clear: boolean);
 var
   folders, files: TStringDynArray;
 begin
-
-  // Выводим текущий путь
   Label1.Text := path_tr;
-
-  // *****Папки*****
-  // Ищем папки
   folders := TDirectory.GetDirectories(path_tr);
-
-  // Сортируем папки
   TArray.Sort<String>(folders, TComparer<String>.Construct(CompareLowerStr));
 
   if clear then
   begin
-    // Очищаем Листбокс
     ListBox1.clear;
   end;
 
-  // Заполняем Листбокс списком отсортированных папок
   AddListItem(folders, 'folder');
-  // ***************
-
-  // *****Файлы*****
-  // Ищем файлы
   files := TDirectory.GetFiles(path_tr);
-
-  // Сортируем файлы
   TArray.Sort<String>(files, TComparer<String>.Construct(CompareLowerStr));
-
-  // Дополняем Листбокс списком отсортированных файлов
   AddListItem(files, 'file');
-  // ***************
 
 end;
 
