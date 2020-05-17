@@ -24,8 +24,8 @@ type
   TCallback = procedure(ASelected: TArrayCheck) of object;
 
   TfrmFileManager = class(TForm)
-    ListBox1: TListBox;
-    Label1: TLabel;
+    lstBoxFolderFile: TListBox;
+    lblPath: TLabel;
     ToolBar1: TToolBar;
     spdbtnBackFolder: TSpeedButton;
     SpeedButton2: TSpeedButton;
@@ -54,12 +54,12 @@ type
     Image5: TImage;
     spdbtnSelect: TSpeedButton;
     procedure FormCreate(Sender: TObject);
-    procedure ListBox1ItemClick(const Sender: TCustomListBox;
+    procedure lstBoxFolderFileItemClick(const Sender: TCustomListBox;
       const Item: TListBoxItem);
     procedure spdbtnBackFolderClick(Sender: TObject);
     procedure FormKeyUp(Sender: TObject; var Key: Word; var KeyChar: Char;
       Shift: TShiftState);
-    procedure ListBox1ChangeCheck(Sender: TObject);
+    procedure lstBoxFolderFileChangeCheck(Sender: TObject);
     procedure SpeedButton2Click(Sender: TObject);
     procedure SpeedButton3Click(Sender: TObject);
     procedure SpeedButton5Click(Sender: TObject);
@@ -73,7 +73,7 @@ type
   private
 
     procedure AddListItem(list: array of string; itype: string);
-    procedure TotalWork(path_tr: string; clear: boolean);
+    procedure GetFolderFile(path_tr: string; clear: boolean);
     procedure OnOffButton(del, add, copy, cut: boolean);
     { Private declarations }
   public
@@ -132,12 +132,12 @@ begin
   BitmapFolder := GetImage('folder');
   BitmapFile := GetImage('file');
 
-  ListBox1.BeginUpdate;
+  lstBoxFolderFile.BeginUpdate;
 
   for c := 0 to Length(list) - 1 do
   begin
 
-    LItem := TListBoxItem.Create(ListBox1);
+    LItem := TListBoxItem.Create(lstBoxFolderFile);
 
     if itype = 'folder' then
     begin
@@ -157,11 +157,11 @@ begin
     LItem.ItemData.Text := ExtractFileName(list[c]);
     LItem.ItemData.Detail := list[c];
     LItem.TagString := itype;
-    ListBox1.AddObject(LItem);
+    lstBoxFolderFile.AddObject(LItem);
 
   end;
 
-  ListBox1.EndUpdate;
+  lstBoxFolderFile.EndUpdate;
 
 end;
 
@@ -196,7 +196,7 @@ end;
 procedure TfrmFileManager.DialogEditChangeTracking(Sender: TObject);
 begin
   if CheckName(DialogEdit.Text) then
-    DialogError.Text := 'Недопускаются \ / : * ? " < > | ~'
+    DialogError.Text := 'Not support \ / : * ? " < > | ~'
   else
     DialogError.Text := '';
 end;
@@ -211,7 +211,7 @@ begin
 {$IFDEF ANDROID}
   path := TPath.GetSharedDownloadsPath;
 {$ENDIF}
-  TotalWork(path, False);
+  GetFolderFile(path, False);
 
   SpeedButton2.Visible := False;
   SpeedButton3.Visible := False;
@@ -252,29 +252,29 @@ begin
   end;
 end;
 
-procedure TfrmFileManager.ListBox1ChangeCheck(Sender: TObject);
+procedure TfrmFileManager.lstBoxFolderFileChangeCheck(Sender: TObject);
 var
   i: Integer;
 begin
   SetLength(ItemsCheck, 0, 0);
 
-  for i := 0 to ListBox1.Count - 1 do
+  for i := 0 to lstBoxFolderFile.Count - 1 do
   begin
 
-    if (ListBox1.ListItems[i].IsChecked) and
-      (ListBox1.ListItems[i].TagString = 'file') then
+    if (lstBoxFolderFile.ListItems[i].IsChecked) and
+      (lstBoxFolderFile.ListItems[i].TagString = 'file') then
     begin
       SetLength(ItemsCheck, i + 1, 3);
-      ItemsCheck[i][0] := ListBox1.ListItems[i].Text;
-      ItemsCheck[i][1] := ListBox1.ListItems[i].TagString;
-      ItemsCheck[i][2] := ListBox1.ListItems[i].ItemData.Detail;
+      ItemsCheck[i][0] := lstBoxFolderFile.ListItems[i].Text;
+      ItemsCheck[i][1] := lstBoxFolderFile.ListItems[i].TagString;
+      ItemsCheck[i][2] := lstBoxFolderFile.ListItems[i].ItemData.Detail;
     end
-    else if (ListBox1.ListItems[i].IsChecked) and
-      (ListBox1.ListItems[i].TagString = 'folder') then
+    else if (lstBoxFolderFile.ListItems[i].IsChecked) and
+      (lstBoxFolderFile.ListItems[i].TagString = 'folder') then
     begin
 
       ShowMessage('Unable to Upload a Folder!');
-      ListBox1.ListItems[i].IsChecked := False;
+      lstBoxFolderFile.ListItems[i].IsChecked := False;
     end;
 
   end;
@@ -290,8 +290,8 @@ begin
 
 end;
 
-procedure TfrmFileManager.ListBox1ItemClick(const Sender: TCustomListBox;
-  const Item: TListBoxItem);
+procedure TfrmFileManager.lstBoxFolderFileItemClick(const Sender
+  : TCustomListBox; const Item: TListBoxItem);
 var
   FileName, ExtFile: string;
 {$IFDEF ANDROID}
@@ -318,11 +318,11 @@ begin
 
     if TDirectory.Exists(path) then
     begin
-      TotalWork(path, True);
+      GetFolderFile(path, True);
     end
     else
     begin
-      ListBox1.Items.Delete(Item.Index);
+      lstBoxFolderFile.Items.Delete(Item.Index);
       ShowMessage('Folder not found!');
     end;
 
@@ -375,10 +375,10 @@ begin
       Begin
         if Assigned(Callback) then
         begin
-          // if ListBox1.ItemIndex = -1 then
+          // if lstBoxtFolderFile.ItemIndex = -1 then
           // LResult := EmptyStr
           // else
-          // LResult := ListBox1.Items[ListBox1.ItemIndex];
+          // LResult := lstBoxtFolderFile.Items[lstBoxtFolderFile.ItemIndex];
 
           Callback(ItemsCheck);
         end;
@@ -396,7 +396,18 @@ begin
 end;
 
 procedure TfrmFileManager.spdbtnBackFolderClick(Sender: TObject);
+var
+  iPosDelimater: Integer;
 begin
+
+{$IFDEF ANDROID}
+  iPosDelimater := pos('/', path);
+  if (iPosDelimater <= 0) then
+  Begin
+    spdbtnBackFolder.Enabled := False;
+    exit;
+  End;
+{$ENDIF}
 
   path := ExtractFileDir(path);
 
@@ -405,7 +416,7 @@ begin
   else
     path := path;
 
-  TotalWork(path, True);
+  GetFolderFile(path, True);
 
   if Length(ItemsCheck) <> 0 then
   begin
@@ -456,8 +467,8 @@ begin
         end;
       end;
     end;
-    TotalWork(path, True);
-    ListBox1ChangeCheck(self);
+    GetFolderFile(path, True);
+    lstBoxFolderFileChangeCheck(self);
   end;
 end;
 
@@ -494,7 +505,7 @@ begin
   if (Length(DialogEdit.Text) = 0) OR (DialogEdit.Text = ' ') then
   begin
     DialogError.Text := 'Empty !';
-    Exit;
+    exit;
   end;
 
   newpath := path + PathDelim + DialogEdit.Text;
@@ -510,7 +521,7 @@ begin
       newfile := TFile.Create(newpath);
       newfile.Free;
       SpeedButton5Click(self);
-      TotalWork(path, True);
+      GetFolderFile(path, True);
     end;
   end
   else if DialogEdit.TagString = 'CreateFolder' then
@@ -523,7 +534,7 @@ begin
     begin
       TDirectory.CreateDirectory(newpath);
       SpeedButton5Click(self);
-      TotalWork(path, True);
+      GetFolderFile(path, True);
     end;
   end;
 end;
@@ -576,8 +587,8 @@ begin
     end;
   end;
   SpeedButton9.Tag := 0;
-  TotalWork(path, True);
-  ListBox1ChangeCheck(self);
+  GetFolderFile(path, True);
+  lstBoxFolderFileChangeCheck(self);
 end;
 
 procedure TfrmFileManager.SpeedButton8Click(Sender: TObject);
@@ -597,23 +608,40 @@ begin
   end;
 end;
 
-procedure TfrmFileManager.TotalWork(path_tr: string; clear: boolean);
+//
+procedure TfrmFileManager.GetFolderFile(path_tr: string; clear: boolean);
 var
   folders, files: TStringDynArray;
+  Firstchar: Char;
 begin
-  Label1.Text := path_tr;
+{$IFDEF ANDROID}
+  Firstchar := Pchar(path_tr.Substring(0, 1))^; // check the first character
+
+  if (Firstchar = '/') then { '/' }
+    path_tr := copy(path_tr, 2, Length(path_tr));
+
+  iPosDelimater := pos('/', path_tr);
+  if (iPosDelimater > 0) then
+  Begin
+    spdbtnBackFolder.Enabled := True;
+  End;
+
+{$ENDIF}
+  lblPath.Text := path_tr; // Display the hole path
+
   folders := TDirectory.GetDirectories(path_tr);
   TArray.Sort<String>(folders, TComparer<String>.Construct(CompareLowerStr));
 
   if clear then
   begin
-    ListBox1.clear;
+    lstBoxFolderFile.clear;
   end;
 
-  AddListItem(folders, 'folder');
+  AddListItem(folders, 'folder'); // Add Folder
+
   files := TDirectory.GetFiles(path_tr);
   TArray.Sort<String>(files, TComparer<String>.Construct(CompareLowerStr));
-  AddListItem(files, 'file');
+  AddListItem(files, 'file'); // Add File
 
 end;
 

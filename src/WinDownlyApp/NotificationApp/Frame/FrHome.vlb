@@ -89,9 +89,6 @@ Coordinates=112,448,49,51
 [GroupName]
 Coordinates=105,532,73,33
 
-[TabItem1]
-Coordinates=10,532,59,33
-
 [edtEmail]
 Coordinates=930,10,57,51
 
@@ -109,9 +106,6 @@ Coordinates=741,166,68,33
 
 [edtPassword]
 Coordinates=199,10,78,51
-
-[TabItem2]
-Coordinates=924,448,59,33
 
 [statbrMain]
 Coordinates=823,448,66,33
@@ -149,4 +143,10 @@ Coordinates=745,218,140,177
 [dataMain.tblConnection]
 Coordinates=168,198,131,177
 Visible=False
+
+[TabItemAction]
+Coordinates=10,532,59,33
+
+[TabItemSetting]
+Coordinates=924,448,59,33
 

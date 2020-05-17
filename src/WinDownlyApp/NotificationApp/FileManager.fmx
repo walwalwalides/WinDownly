@@ -13,7 +13,7 @@ object frmFileManager: TfrmFileManager
   OnCreate = FormCreate
   OnKeyUp = FormKeyUp
   DesignerMasterStyle = 3
-  object ListBox1: TListBox
+  object lstBoxFolderFile: TListBox
     Align = Client
     Margins.Left = 4.000000000000000000
     Margins.Right = 4.000000000000000000
@@ -26,12 +26,12 @@ object frmFileManager: TfrmFileManager
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     ShowCheckboxes = True
-    OnChangeCheck = ListBox1ChangeCheck
-    OnItemClick = ListBox1ItemClick
+    OnChangeCheck = lstBoxFolderFileChangeCheck
+    OnItemClick = lstBoxFolderFileItemClick
     Viewport.Width = 352.000000000000000000
     Viewport.Height = 439.000000000000000000
   end
-  object Label1: TLabel
+  object lblPath: TLabel
     Align = Top
     StyledSettings = [Family, Size]
     Margins.Left = 4.000000000000000000

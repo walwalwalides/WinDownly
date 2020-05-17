@@ -47,8 +47,8 @@ type
     ImageList1: TImageList;
     StyleWinDownly: TStyleBook;
     TabCtrlMain: TTabControl;
-    TabItem1: TTabItem;
-    TabItem2: TTabItem;
+    TabItemAction: TTabItem;
+    TabItemSetting: TTabItem;
     ListBox1: TListBox;
     GroupName: TListBoxGroupHeader;
     ListBoxItemIPAdresse: TListBoxItem;
@@ -854,6 +854,8 @@ end;
 procedure TFHome.btnFileDownloadClick(Sender: TObject);
 
 begin
+
+
   lblstatusbar.Text := '';
   ModeTransfer := mtDownload;
   FRequester.RequestPermissions([cPermissionReadExternalStorage,
@@ -881,6 +883,8 @@ end;
 
 procedure TFHome.btnFileUploadClick(Sender: TObject);
 begin
+  { Upload }
+
   lblstatusbar.Text := '';
   ModeTransfer := mtUpload;
   FRequester.RequestPermissions([cPermissionReadExternalStorage,
