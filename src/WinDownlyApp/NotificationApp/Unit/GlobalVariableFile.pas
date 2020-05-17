@@ -15,11 +15,11 @@ type
 
   TIngredientsConfiguration = class
   private
-    FIngredients : String;
+    FValue : String;
     FOpen : Boolean;
     FMode : String;
   public
-    property Ingredients : String read FIngredients write FIngredients;
+    property Value : String read FValue write FValue;
     property Open : Boolean read FOpen write FOpen;
     property Mode : String read FMode write FMode;
   end;

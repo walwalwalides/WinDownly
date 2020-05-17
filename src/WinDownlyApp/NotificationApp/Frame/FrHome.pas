@@ -630,10 +630,9 @@ begin
       // TAndroidHelper.StringToJString(sPAthDB));
       // TAndroidHelper.Activity.startService(LIntent);
 
+      //Start Service
       TLocalServiceConnection.startService('NotificationService');
-
-      LIntentService := TIntentServiceHelper.Create('NotificationService', 0,
-        sNotifyFile);
+      LIntentService := TIntentServiceHelper.Create('NotificationService', 0,sNotifyFile);
       TAndroidHelper.Activity.startService(LIntentService.Intent);
 
 {$ELSE}
@@ -942,7 +941,7 @@ begin
 
     if ASelectedItem[i][0] <> '' then
     begin
-      // Ïîëó÷àåì ïóòü èç ìàññèâà
+
       LItemPath := ASelectedItem[i][2];
 
       if ASelectedItem[i][1] = 'folder' then
