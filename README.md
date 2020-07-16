@@ -17,7 +17,7 @@
 `WinDownly` help to easily transfer Files from pc to android app.
 
 
-- Principal Software Benefits:
+ Principal Software Benefits:
 
      - Transfer any extension Files using udp as transfer protocol
      
