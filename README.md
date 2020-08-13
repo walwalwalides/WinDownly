@@ -63,8 +63,6 @@
 
 ------
 
-![](https://tokei.rs/b1/github/walwalwalides/WinDownly)
-
 
 # If You Want To Donate!
 
